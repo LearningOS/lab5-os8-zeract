@@ -76,25 +76,30 @@ pub fn main() -> i32 {
     for _ in 0..THREAD_N {
         semaphore_down(SEM_BARRIER);
     }
-
+    
     for n in RES_NUM {
         semaphore_create(n);
     }
+    
     let mut tids = [0; THREAD_N];
 
     for i in 0..THREAD_N {
         tids[i] = thread_create(deadlock_test as usize, 0) as usize;
     }
-
+    
     sleep(500);
     for _ in 0..THREAD_N {
         semaphore_up(SEM_BARRIER);
     }
+
+    
     let mut failed = 0;
     for tid in tids {
+       
         if waittid(tid) != 0 {
             failed += 1;
         }
+        
     }
     assert!(failed > 0);
     println!("deadlock test semaphore 1 OK!");

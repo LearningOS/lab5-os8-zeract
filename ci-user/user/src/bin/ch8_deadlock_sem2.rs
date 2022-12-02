@@ -24,6 +24,7 @@ const REQUEST: [Option<usize>; THREAD_N] = [Some(1), None, Some(2), None];
 
 fn try_sem_down(sem_id: usize) {
     if semaphore_down(sem_id) == -0xdead {
+        
         semaphore_up(ALLOC[(gettid() - 1) as usize]);
         exit(-1);
     }
@@ -38,6 +39,7 @@ fn deadlock_test() {
         semaphore_up(sem_id);
     }
     semaphore_up(ALLOC[id]);
+    
     exit(0);
 }
 
